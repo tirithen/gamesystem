@@ -17,7 +17,7 @@ export class Pocket {
     this.componentTypes[type.name] = type;
   }
 
-  registerKey(data) {
+  addKey(data) {
     // Get the id
     let key = data.id ? data.id : this.getNextId();
 
