@@ -6,8 +6,8 @@ import {radius} from './componentTypes/radius.js';
 let pocket = new Pocket();
 
 pocket.registerComponentType(keyboardState);
-pocket.registerComponentType(position);
-pocket.registerComponentType(radius);
+//pocket.registerComponentType(position);
+//pocket.registerComponentType(radius);
 
 pocket.addKey({
   position: {

@@ -10,7 +10,7 @@ export class Pocket {
   }
 
   getNextKeyId() {
-    return ++this.idCounter;
+    return ++this.keyIdCounter;
   }
 
   registerComponentType(type) {
@@ -19,7 +19,7 @@ export class Pocket {
 
   addKey(data) {
     // Get the id
-    let key = data.id ? data.id : this.getNextId();
+    let keyId = data.id ? data.id : this.getNextKeyId();
 
     // If data is already taken, set a new one
     if (data.id && this.keys.indexOf(data.id) !== -1) {
@@ -39,7 +39,7 @@ export class Pocket {
   }
 
   addComponentToKey(keyId, componentTypeName, options) {
-    if (this.keys.indexOf(key) === -1) {
+    if (this.keys.indexOf(keyId) === -1) {
       throw new Error('Could not find key with id "' + keyId + '"');
     }
 
