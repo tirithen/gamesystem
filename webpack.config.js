@@ -4,6 +4,7 @@ module.exports = {
     filename: 'script.js',
     path: __dirname
   },
+  devtool: 'cheap-source-map',
   module: {
     loaders: [
       {
