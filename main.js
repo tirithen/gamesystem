@@ -1,15 +1,15 @@
-import {Pocket} from './Pocket.js';
+import {World} from './World.js';
 import {keyboardState} from './componentTypes/keyboardState.js';
 import {position} from './componentTypes/position.js';
 import {radius} from './componentTypes/radius.js';
 
-let pocket = new Pocket();
+let world = new World();
 
-pocket.registerComponentType(keyboardState);
-//pocket.registerComponentType(position);
-//pocket.registerComponentType(radius);
+world.registerComponentType(keyboardState);
+//world.registerComponentType(position);
+//world.registerComponentType(radius);
 
-pocket.addKey({
+world.addEntry({
   position: {
     x: Math.random() * 100,
     y: Math.random() * 100
@@ -19,4 +19,4 @@ pocket.addKey({
   }
 });
 
-console.log('pocket', pocket);
+console.log('world', world);
