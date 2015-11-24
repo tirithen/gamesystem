@@ -1,4 +1,6 @@
-export function keyboardState(component, options) {
+// TODO: write tests
+
+export default function keyboardState(component, options) {
   function keydown(event) {
     component.pressed[event.keyCode] = true;
     console.log('Keydown', event.keyCode);

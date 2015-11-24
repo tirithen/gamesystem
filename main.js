@@ -1,21 +1,16 @@
-import {World} from './World.js';
-import {keyboardState} from './componentTypes/keyboardState.js';
-import {position} from './componentTypes/position.js';
-import {radius} from './componentTypes/radius.js';
+import World from './World.js';
+import keyboardState from './componentTypes/keyboardState.js';
+import position from './componentTypes/position.js';
 
 let world = new World();
 
-world.registerComponentType(keyboardState);
-//world.registerComponentType(position);
-//world.registerComponentType(radius);
+world.addComponentType(keyboardState);
+world.addComponentType(position);
 
-world.addEntry({
+world.addEntity({
   position: {
     x: Math.random() * 100,
     y: Math.random() * 100
-  },
-  radius: {
-    radius: 10
   }
 });
 
