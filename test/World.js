@@ -190,7 +190,6 @@ describe('World', () => {
     it('should have functionality to destroy existing entity data', () => {
       world.immediatelyDestroyEntity.should.be.instanceof(Function);
       let id = world.addEntity({name: 'testname'});
-
       (() => {
         world.immediatelyDestroyEntity(id);
       }).should.not.throw(Error);
