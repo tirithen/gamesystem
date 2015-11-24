@@ -8,6 +8,7 @@ export default class World {
     this.ids = [];
     this.systems = [];
     this.lastId = 1;
+    this.entitiesToDestroy = {};
   }
 
   addComponentType(name, initializer) {
@@ -25,9 +26,18 @@ export default class World {
       throw new Error('The provided id "' + id + '" is not registered');
     }
 
+    // If the value is not an object, wrap it with one
+    if (data && !(data instanceof Object)) {
+      let value = data;
+      data = {};
+      data[name] = value;
+    }
+
+    // Add branches to the component tree
     this.components[name] = this.components[name] || {};
     this.components[name][id] = this.components[name][id] || {};
 
+    // Run object through the component type function
     if (this.componentTypes[name]) {
       this.componentTypes[name](this.components[name][id], data || {});
     } else {
@@ -75,5 +85,26 @@ export default class World {
 
   addSystem(name, requiredComponents, action) {
     this.systems.push(new System(name, requiredComponents, action));
+  }
+
+  destroyEntity(id) {
+    if (!this.ids[id]) {
+      throw new Error('There is no registered entity with the id "' + id + '"');
+    }
+
+    this.entitiesToDestroy[id] = true;
+  }
+
+  immediatelyDestroyEntity(id) {
+    // TODO: make sure to properly delete any instances related to the entity but are registered in external frameworks like THREE.js
+    // Run destroyEntity to make sure that it is properly marked for deletion
+    this.destroyEntity(id);
+
+    delete this.ids[id];
+    delete this.entitiesToDestroy[id];
+
+    Object.keys(this.components).forEach((name) => {
+      delete this.components[name][id];
+    });
   }
 }

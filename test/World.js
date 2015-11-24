@@ -29,6 +29,10 @@ describe('World', () => {
     world.systems.should.be.an('array');
   });
 
+  it('should have property entitiesToDestroy', () => {
+    world.entitiesToDestroy.should.be.an('object');
+  });
+
   describe('#addComponentType', () => {
     let world = new World();
     let initializer = (component, options) => {
@@ -90,20 +94,41 @@ describe('World', () => {
   });
 
   describe('#addEntity', () => {
-    it('should have functionality to add an entity', () => {
-      let world = new World();
-      world.addComponentType('name', (component, options) => {
-        component.name = options.name;
-      });
+    it(
+      'should have functionality to add an entity without object properties',
+      () => {
+        let world = new World();
+        world.addComponentType('name', (component, options) => {
+          component.name = options.name;
+        });
 
-      world.addEntity.should.be.instanceof(Function);
+        world.addEntity.should.be.instanceof(Function);
 
-      let id = world.addEntity({name: 'testname'});
+        let id = world.addEntity({name: 'testname'});
 
-      id.should.equal(1);
-      world.ids[1].should.equal(true);
-      world.components.name[1].name = 'testname';
-    });
+        id.should.equal(1);
+        world.ids[1].should.equal(true);
+        world.components.name[1].name.should.equal('testname');
+      }
+    );
+
+    it(
+      'should have functionality to add an entity with object properties',
+      () => {
+        let world = new World();
+        world.addComponentType('name', (component, options) => {
+          component.name = options.name;
+        });
+
+        world.addEntity.should.be.instanceof(Function);
+
+        let id = world.addEntity({name: {name: 'testname'}});
+
+        id.should.equal(1);
+        world.ids[1].should.equal(true);
+        world.components.name[1].name.should.equal('testname');
+      }
+    );
 
     it('should increment next id counter', () => {
       let world = new World();
@@ -128,5 +153,61 @@ describe('World', () => {
       world.systems[0].requiredComponents[0].should.equal('name');
       world.systems[0].action.should.be.instanceof(Function);
     });
+  });
+
+  describe('#destroyEntity', () => {
+    let world = new World();
+
+    it('should have functionality to mark entity for destruction', () => {
+      world.destroyEntity.should.be.instanceof(Function);
+      let id = world.addEntity({});
+      (() => {
+        world.destroyEntity(id);
+      }).should.not.throw(Error);
+      world.entitiesToDestroy[id].should.equal(true);
+    });
+
+    it(
+      'should throw an error when trying to destroy non existent entity',
+      () => {
+        world.destroyEntity.should.be.instanceof(Function);
+        let id = 123;
+        (() => {
+          world.destroyEntity(id);
+        }).should.throw(Error);
+        should.not.exist(world.entitiesToDestroy[id]);
+      }
+    );
+  });
+
+  describe('#immediatelyDestroyEntity', () => {
+    let world = new World();
+
+    world.addComponentType('name', (component, options) => {
+      component.name = options.name;
+    });
+
+    it('should have functionality to destroy existing entity data', () => {
+      world.immediatelyDestroyEntity.should.be.instanceof(Function);
+      let id = world.addEntity({name: 'testname'});
+
+      (() => {
+        world.immediatelyDestroyEntity(id);
+      }).should.not.throw(Error);
+      should.not.exist(world.ids[id]);
+      should.not.exist(world.components.name[id]);
+    });
+
+    it(
+      'should throw an error when trying to destroy non existent entity',
+      () => {
+        world.immediatelyDestroyEntity.should.be.instanceof(Function);
+        let id = 123;
+        (() => {
+          world.immediatelyDestroyEntity(id);
+        }).should.throw(Error);
+        should.not.exist(world.ids[id]);
+      }
+    );
   });
 });
