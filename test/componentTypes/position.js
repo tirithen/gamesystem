@@ -20,9 +20,9 @@ describe('componentTypes', () => {
       let world = new World();
       world.addComponentType(position);
       world.addEntity({position: {x: 12, y: 3}});
-      world.components.position[1].x.should.equal(12);
-      world.components.position[1].y.should.equal(3);
-      world.components.position[1].z.should.equal(0);
+      world.components.position[1].position.x.should.equal(12);
+      world.components.position[1].position.y.should.equal(3);
+      world.components.position[1].position.z.should.equal(0);
     });
   });
 });
