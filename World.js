@@ -11,7 +11,24 @@ export default class World {
     this.entitiesToDestroy = {};
   }
 
-  addComponentType(name, initializer) {
+  addComponentType(nameOrInitializer, initializer) {
+    let name = '';
+
+    if (
+      typeof nameOrInitializer === 'string' &&
+      initializer instanceof Function
+    ) {
+      name = nameOrInitializer;
+    } else if (nameOrInitializer instanceof Function) {
+      name = nameOrInitializer.name;
+      initializer = nameOrInitializer;
+    } else {
+      throw new Error(
+        'addComponentType requires first arguemnt as named function or first ' +
+        'argument as string and second as a function'
+      );
+    }
+
     if (this.componentTypes[name]) {
       console.warn(
         'Component type "' + name + '" was added already, overriding it'

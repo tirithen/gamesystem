@@ -1,4 +1,5 @@
 import position from '../../componentTypes/position';
+import World from '../../World';
 
 describe('componentTypes', () => {
   describe('position', () => {
@@ -14,5 +15,14 @@ describe('componentTypes', () => {
         component.position.z.should.equal(3);
       }
     );
+
+    it('should add component position to entity', () => {
+      let world = new World();
+      world.addComponentType(position);
+      world.addEntity({position: {x: 12, y: 3}});
+      world.components.position[1].x.should.equal(12);
+      world.components.position[1].y.should.equal(3);
+      world.components.position[1].z.should.equal(0);
+    });
   });
 });

@@ -35,14 +35,25 @@ describe('World', () => {
 
   describe('#addComponentType', () => {
     let world = new World();
-    let initializer = (component, options) => {
-      component.name = options.name;
-    };
 
-    it('should have functionality to add a component type', () => {
+    it('should have functionality to add an anonymous component type', () => {
+      let componentTypeAnonymous = (component, options) => {
+        component.name = options.name;
+      };
+
       world.addComponentType.should.be.instanceof(Function);
-      world.addComponentType('name', initializer);
-      world.componentTypes.name.should.equal(initializer);
+      world.addComponentType('name', componentTypeAnonymous);
+      world.componentTypes.name.should.equal(componentTypeAnonymous);
+    });
+
+    it('should have functionality to add a named component type', () => {
+      let componentTypeNamed = function name2(component, options) {
+        component.name = options.name;
+      };
+
+      world.addComponentType.should.be.instanceof(Function);
+      world.addComponentType(componentTypeNamed);
+      world.componentTypes.name2.should.equal(componentTypeNamed);
     });
   });
 

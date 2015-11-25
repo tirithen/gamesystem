@@ -9,8 +9,10 @@ world.addComponentType(position);
 
 world.addEntity({
   position: {
-    x: Math.random() * 100,
-    y: Math.random() * 100
+    position: {
+      x: Math.random() * 100,
+      y: Math.random() * 100
+    }
   }
 });
 
