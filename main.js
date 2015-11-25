@@ -7,13 +7,13 @@ let world = new World();
 world.addComponentType(keyboardState);
 world.addComponentType(position);
 
-world.addEntity({
-  position: {
+world.addEntity(
+  {
     position: {
       x: Math.random() * 100,
       y: Math.random() * 100
     }
   }
-});
+);
 
 console.log('world', world);
