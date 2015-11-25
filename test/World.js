@@ -153,6 +153,28 @@ describe('World', () => {
     });
   });
 
+  describe.only('#getComponentDataFor', () => {
+    let world = new World();
+
+    world.addComponentType(function name(component, options) {
+      component.name = options.name;
+    });
+
+    world.addEntity({name: 'testname123'});
+
+    it('should have functionality to get data for single component', () => {
+      let data = world.getComponentDataFor(1, 'name');
+      data.should.be.instanceof(Object);
+      data.name.should.equal('testname123');
+    });
+  });
+
+  describe('#tick', () => {
+    it('should have functionality to "tick" the world into a new state', () => {
+      true.should.equal(false);
+    });
+  });
+
   describe('#addSystem', () => {
     let world = new World();
 
@@ -164,6 +186,30 @@ describe('World', () => {
       world.systems[0].requiredComponents[0].should.equal('name');
       world.systems[0].action.should.be.instanceof(Function);
     });
+
+    it(
+      'should create a system that is running for component and component ' +
+      'type on each tick',
+      () => {
+        true.should.equal(false);
+      }
+    );
+  });
+
+  describe('#addSystemForEachComponent', () => {
+    let world = new World();
+
+    it('should have functionality to add a system for each component', () => {
+      true.should.equal(false);
+    });
+
+    it(
+      'should create one system for each component that is running for each ' +
+      'component and component type on each tick',
+      () => {
+        true.should.equal(false);
+      }
+    );
   });
 
   describe('#destroyEntity', () => {

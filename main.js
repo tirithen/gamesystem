@@ -1,19 +1,41 @@
-import World from './World.js';
-import keyboardState from './componentTypes/keyboardState.js';
-import position from './componentTypes/position.js';
+import World from './World';
 
+// Components
+import playerInput from './componentTypes/playerInput';
+import position from './componentTypes/position';
+
+// Entities
+import playerAvatar from './entities/playerAvatar';
+
+// Systems
+import playerControlPosition from './systems/playerControlPosition';
+
+// Create the world
 let world = new World();
 
+// Add component types
 world.addComponentType(keyboardState);
 world.addComponentType(position);
 
-world.addEntity(
-  {
-    position: {
-      x: Math.random() * 100,
-      y: Math.random() * 100
+// Add systems
+world.addSystemForEachComponent(playerControlPosition);
+
+// Bind keyboard keys
+world.addEntity({
+  id: 'playerActions',
+  playerInput: {
+    bind: {
+      27: 'HALT',
+      32: 'SHOOT',
+      37: 'LEFT',
+      39: 'RIGHT',
+      38: 'UP',
+      68: 'DEBUG'
     }
   }
-);
+});
+
+// Add the player avatar
+world.addEntity(playerAvatar);
 
 console.log('world', world);

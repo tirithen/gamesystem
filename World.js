@@ -24,7 +24,7 @@ export default class World {
       initializer = nameOrInitializer;
     } else {
       throw new Error(
-        'addComponentType requires first arguemnt as named function or first ' +
+        'addComponentType requires first argument as named function or first ' +
         'argument as string and second as a function'
       );
     }
@@ -110,6 +110,23 @@ export default class World {
     }
 
     this.entitiesToDestroy[id] = true;
+  }
+
+  getComponentDataFor(id, componentTypeName) {
+    if (!this.components[componentTypeName]) {
+      throw new Error(
+        'Component type "' + componentTypeName + '" is not registered'
+      );
+    }
+
+    if (!this.components[componentTypeName][id]) {
+      throw new Error(
+        'No data for id "' + id + '" and component type ' +
+        '"' + componentTypeName + '"'
+      );
+    }
+
+    return this.components[componentTypeName][id];
   }
 
   immediatelyDestroyEntity(id) {
