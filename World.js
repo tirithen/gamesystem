@@ -9,6 +9,29 @@ export default class World {
     this.systems = [];
     this.lastId = 1;
     this.entitiesToDestroy = {};
+    this.time = 0;
+    this.timeSeconds = 0;
+    this.deltaTime = 0;
+    this.deltaTimeSeconds = 0;
+  }
+
+  tick(deltaTime) {
+    // Update the world time
+    this.deltaTime = deltaTime;
+    this.time += deltaTime;
+    this.deltaTimeSeconds = this.deltaTime / 1000;
+    this.timeSeconds = this.time / 1000;
+
+    // Actually destroy queued keys, to avoid undefined components
+    // during the tick in which they are destroyed.
+    Object.keys(this.entitiesToDestroy).forEach((id) => {
+      this.immediatelyDestroyEntity(id);
+    });
+
+    // Run the systems
+    this.systems.forEach((system) => {
+      system.tick(this);
+    });
   }
 
   addComponentType(nameOrInitializer, initializer) {
@@ -100,8 +123,17 @@ export default class World {
     return id;
   }
 
-  addSystem(name, requiredComponents, action) {
-    this.systems.push(new System(name, requiredComponents, action));
+  addSystem(objectOrFunction) {
+    if (objectOrFunction instanceof Function) {
+      objectOrFunction.action = objectOrFunction;
+    }
+
+    this.systems.push(new System(
+      objectOrFunction.name,
+      objectOrFunction.components,
+      objectOrFunction.action,
+      objectOrFunction.each
+    ));
   }
 
   destroyEntity(id) {

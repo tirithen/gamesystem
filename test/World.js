@@ -33,6 +33,18 @@ describe('World', () => {
     world.entitiesToDestroy.should.be.an('object');
   });
 
+  it('should have property time', () => {
+    world.time.should.be.a('number');
+  });
+
+  it('should have property deltaTime', () => {
+    world.deltaTime.should.be.a('number');
+  });
+
+  it('should have property deltaTimeSeconds', () => {
+    world.deltaTimeSeconds.should.be.a('number');
+  });
+
   describe('#addComponentType', () => {
     let world = new World();
 
@@ -153,7 +165,7 @@ describe('World', () => {
     });
   });
 
-  describe.only('#getComponentDataFor', () => {
+  describe('#getComponentDataFor', () => {
     let world = new World();
 
     world.addComponentType(function name(component, options) {
@@ -170,44 +182,230 @@ describe('World', () => {
   });
 
   describe('#tick', () => {
-    it('should have functionality to "tick" the world into a new state', () => {
-      true.should.equal(false);
+    it('should have tick method', () => {
+      let world = new World();
+      world.tick.should.be.instanceof(Function);
     });
-  });
 
-  describe('#addSystem', () => {
-    let world = new World();
-
-    it('should have functionality to add a system', () => {
-      world.addSystem.should.be.instanceof(Function);
-      world.addSystem('testsystem', ['name'], () => {});
-      world.systems[0].name.should.equal('testsystem');
-      world.systems[0].requiredComponents.should.be.an('array');
-      world.systems[0].requiredComponents[0].should.equal('name');
-      world.systems[0].action.should.be.instanceof(Function);
+    it('should have functionality to update time and deltaTime on tick', () => {
+      let world = new World();
+      world.time.should.equal(0);
+      world.deltaTime.should.equal(0);
+      world.tick(16);
+      world.time.should.equal(16);
+      world.deltaTime.should.equal(16);
+      world.tick(12);
+      world.time.should.equal(28);
+      world.deltaTime.should.equal(12);
     });
 
     it(
-      'should create a system that is running for component and component ' +
-      'type on each tick',
+      'should have functionality to update timeSeconds and deltaTimeSeconds ' +
+      'on tick',
       () => {
-        true.should.equal(false);
+        let world = new World();
+        world.timeSeconds.should.equal(0);
+        world.deltaTimeSeconds.should.equal(0);
+        world.tick(16 * 1000);
+        world.timeSeconds.should.equal(16);
+        world.deltaTimeSeconds.should.equal(16);
+        world.tick(12 * 1000);
+        world.timeSeconds.should.equal(28);
+        world.deltaTimeSeconds.should.equal(12);
+      }
+    );
+
+    it(
+      'should have functionality clean up entities marked for destruction on ' +
+      'each tick',
+      () => {
+        let world = new World();
+        world.addEntity({id: 123});
+        world.destroyEntity(123);
+        world.ids[123].should.equal(true);
+        world.tick();
+        true.should.equal(!world.ids[123]);
+      }
+    );
+
+    it(
+      'should have functionality to tick the world into a new state so that ' +
+      'an "each system" updates component data',
+      () => {
+        let world = new World();
+
+        world.addComponentType('distance', (component, options) => {
+          component.distance = options.distance;
+        });
+
+        world.addSystem({
+          name: 'distanceUpdate',
+          components: ['distance'],
+          each: true,
+          action: (world, entityId, distance) => {
+            distance.distance += 10 * world.deltaTimeSeconds;
+          }
+        });
+
+        world.addEntity({
+          id: 'distanceEntity1',
+          distance: 10
+        });
+
+        world.addEntity({
+          id: 'distanceEntity2',
+          distance: 35
+        });
+
+        let distance;
+        distance = world.getComponentDataFor('distanceEntity1', 'distance');
+        distance.distance.should.equal(10);
+        distance = world.getComponentDataFor('distanceEntity2', 'distance');
+        distance.distance.should.equal(35);
+        world.tick(1000);
+        distance = world.getComponentDataFor('distanceEntity1', 'distance');
+        distance.distance.should.equal(20);
+        distance = world.getComponentDataFor('distanceEntity2', 'distance');
+        distance.distance.should.equal(45);
+        world.tick(5000);
+        distance = world.getComponentDataFor('distanceEntity1', 'distance');
+        distance.distance.should.equal(70);
+        distance = world.getComponentDataFor('distanceEntity2', 'distance');
+        distance.distance.should.equal(105);
+      }
+    );
+
+    it(
+      'should have functionality to tick the world into a new state so that ' +
+      'a system updates component data',
+      () => {
+        let world = new World();
+
+        world.addComponentType('distance', (component, options) => {
+          component.distance = options.distance;
+        });
+
+        world.addSystem({
+          name: 'distanceUpdate',
+          components: ['distance'],
+          action: (world, entityIds, distances) => {
+            distances.forEach((distance) => {
+              distance.distance += 10 * world.deltaTimeSeconds;
+            });
+          }
+        });
+
+        world.addEntity({
+          id: 'distanceEntity1',
+          distance: 10
+        });
+
+        world.addEntity({
+          id: 'distanceEntity2',
+          distance: 35
+        });
+
+        let distance;
+        distance = world.getComponentDataFor('distanceEntity1', 'distance');
+        distance.distance.should.equal(10);
+        distance = world.getComponentDataFor('distanceEntity2', 'distance');
+        distance.distance.should.equal(35);
+        world.tick(1000);
+        distance = world.getComponentDataFor('distanceEntity1', 'distance');
+        distance.distance.should.equal(20);
+        distance = world.getComponentDataFor('distanceEntity2', 'distance');
+        distance.distance.should.equal(45);
+        world.tick(5000);
+        distance = world.getComponentDataFor('distanceEntity1', 'distance');
+        distance.distance.should.equal(70);
+        distance = world.getComponentDataFor('distanceEntity2', 'distance');
+        distance.distance.should.equal(105);
       }
     );
   });
 
-  describe('#addSystemForEachComponent', () => {
-    let world = new World();
+  describe('#addSystem', () => {
+    it('should have functionality to add a system from function', () => {
+      let world = new World();
+      world.addSystem.should.be.instanceof(Function);
 
-    it('should have functionality to add a system for each component', () => {
-      true.should.equal(false);
+      function testsystem() {}
+      testsystem.components = ['name'];
+
+      world.addSystem(testsystem);
+      world.systems[0].name.should.equal('testsystem');
+      world.systems[0].components.should.be.an('array');
+      world.systems[0].components.length.should.equal(1);
+      world.systems[0].components[0].should.equal('name');
+      world.systems[0].action.should.be.instanceof(Function);
+      world.systems[0].action.should.equal(testsystem);
+      world.systems[0].each.should.equal(false);
+    });
+
+    it('should have functionality to add a system from object', () => {
+      let world = new World();
+      world.addSystem.should.be.instanceof(Function);
+      let system = {
+        name: 'distanceUpdate',
+        components: ['distance'],
+        action: (world, entityId, distance) => {
+          distance.distance += 10 * world.deltaTimeSeconds;
+        }
+      };
+      world.addSystem(system);
+      world.systems[0].name.should.equal('distanceUpdate');
+      world.systems[0].components.should.be.an('array');
+      world.systems[0].components.length.should.equal(1);
+      world.systems[0].components[0].should.equal('distance');
+      world.systems[0].action.should.be.instanceof(Function);
+      world.systems[0].action.should.equal(system.action);
+      world.systems[0].each.should.equal(false);
     });
 
     it(
-      'should create one system for each component that is running for each ' +
-      'component and component type on each tick',
+      'should have functionality to add a system for each component from ' +
+      'function',
       () => {
-        true.should.equal(false);
+        let world = new World();
+        world.addSystem.should.be.instanceof(Function);
+
+        function testsystem() {}
+        testsystem.components = ['name'];
+        testsystem.each = true;
+
+        world.addSystem(testsystem);
+        world.systems[0].name.should.equal('testsystem');
+        world.systems[0].components.should.be.an('array');
+        world.systems[0].components.length.should.equal(1);
+        world.systems[0].components[0].should.equal('name');
+        world.systems[0].action.should.be.instanceof(Function);
+        world.systems[0].action.should.equal(testsystem);
+        world.systems[0].each.should.equal(true);
+      }
+    );
+
+    it(
+      'should have functionality to add a system for each component ' +
+      'from object',
+      () => {
+        let world = new World();
+        world.addSystem.should.be.instanceof(Function);
+        let system = {
+          name: 'distanceUpdate',
+          components: ['distance'],
+          each: true,
+          action: (world, entityId, distance) => {
+            distance.distance += 10 * world.deltaTimeSeconds;
+          }
+        };
+        world.addSystem(system);
+        world.systems[0].name.should.equal('distanceUpdate');
+        world.systems[0].components.should.be.an('array');
+        world.systems[0].components.length.should.equal(1);
+        world.systems[0].components[0].should.equal('distance');
+        world.systems[0].action.should.be.instanceof(Function);
+        world.systems[0].action.should.equal(system.action);
+        world.systems[0].each.should.equal(true);
       }
     );
   });

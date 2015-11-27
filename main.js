@@ -18,7 +18,7 @@ world.addComponentType(keyboardState);
 world.addComponentType(position);
 
 // Add systems
-world.addSystemForEachComponent(playerControlPosition);
+world.addSystem(playerControlPosition);
 
 // Bind keyboard keys
 world.addEntity({
