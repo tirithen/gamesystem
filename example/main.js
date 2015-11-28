@@ -1,4 +1,4 @@
-import World from './World';
+import World from '../World';
 
 // Components
 import playerInput from './componentTypes/playerInput';
@@ -14,7 +14,7 @@ import playerControlPosition from './systems/playerControlPosition';
 let world = new World();
 
 // Add component types
-world.addComponentType(keyboardState);
+world.addComponentType(playerInput);
 world.addComponentType(position);
 
 // Add systems

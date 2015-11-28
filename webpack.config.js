@@ -1,8 +1,10 @@
+var WebpackNotifierPlugin = require('webpack-notifier');
+
 module.exports = {
-  entry: './main.js',
+  entry: './example/main.js',
   output: {
     filename: 'script.js',
-    path: __dirname
+    path: __dirname + '/example/dist'
   },
   devtool: 'cheap-source-map',
   module: {
@@ -16,5 +18,8 @@ module.exports = {
         }
       }
     ]
-  }
-}
+  },
+  plugins: [
+    new WebpackNotifierPlugin()
+  ]
+};

@@ -1,5 +1,5 @@
-import position from '../../componentTypes/position';
-import World from '../../World';
+import position from '../../../example/componentTypes/position';
+import World from '../../../World';
 
 describe('componentTypes', () => {
   describe('position', () => {

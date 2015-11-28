@@ -2,9 +2,9 @@
   "name": "gamesystem",
   "version": "0.0.1",
   "description": "",
-  "main": "main.js",
+  "main": "example/main.js",
   "scripts": {
-    "start": "./node_modules/.bin/webpack-dev-server --process --colors",
+    "start": "./node_modules/.bin/webpack-dev-server --process --colors --content-base example/",
     "test": "./node_modules/.bin/mocha --recursive --compilers js:babel-core/register",
     "test-watch": "./node_modules/.bin/mocha --watch --growl --recursive --compilers js:babel-core/register"
   },
@@ -27,6 +27,7 @@
     "chai": "^3.4.1",
     "mocha": "^2.3.4",
     "webpack": "^1.12.8",
-    "webpack-dev-server": "^1.12.1"
+    "webpack-dev-server": "^1.12.1",
+    "webpack-notifier": "^1.2.1"
   }
 }
