@@ -8,8 +8,6 @@ export default function playerInput(component, options) {
     if (actionName && !component.action[actionName]) {
       component.action[actionName] = Date.now();
     }
-
-    console.log('Keyup', actionName, component.action[actionName], component.action[event.witch]);
   }
 
   function keyup(event) {
@@ -19,8 +17,6 @@ export default function playerInput(component, options) {
     if (actionName) {
       delete component.action[actionName];
     }
-
-    console.log('Keydown', actionName, component.action[event.witch]);
   }
 
   component.action = {};

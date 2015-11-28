@@ -3,14 +3,29 @@ export default function playerControlPosition(
   entityId,
   position
 ) {
+  let speed = 50;
   let action = world.getComponentDataFor('playerActions', 'playerInput').action;
-  console.log('action', action);
+
+  if (action.up) {
+    position.y -= speed * world.deltaTimeSeconds;
+  }
+
+  if (action.down) {
+    position.y += speed * world.deltaTimeSeconds;
+  }
+
+  if (action.left) {
+    position.x -= speed * world.deltaTimeSeconds;
+  }
+
+  if (action.right) {
+    position.x += speed * world.deltaTimeSeconds;
+  }
 }
 
 playerControlPosition.each = true;
 
 playerControlPosition.components = [
-  'playerInput',
   'position',
   'playerControlled'
 ];
