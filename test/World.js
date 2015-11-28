@@ -14,7 +14,7 @@ describe('World', () => {
   });
 
   it('should have property ids', () => {
-    world.ids.should.be.an('array');
+    world.ids.should.be.an('object');
   });
 
   it('should have property lastId', () => {
@@ -271,7 +271,7 @@ describe('World', () => {
         distance = world.getComponentDataFor('distanceEntity1', 'distance');
         distance.distance.should.equal(70);
         distance = world.getComponentDataFor('distanceEntity2', 'distance');
-        distance.distance.should.equal(105);
+        distance.distance.should.equal(95);
       }
     );
 
@@ -319,7 +319,7 @@ describe('World', () => {
         distance = world.getComponentDataFor('distanceEntity1', 'distance');
         distance.distance.should.equal(70);
         distance = world.getComponentDataFor('distanceEntity2', 'distance');
-        distance.distance.should.equal(105);
+        distance.distance.should.equal(95);
       }
     );
   });

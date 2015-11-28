@@ -3,7 +3,7 @@ let should = require('chai').should();
 import System from '../System';
 import World from '../World';
 
-describe.only('System', () => {
+describe('System', () => {
   let system = new System('test', ['comp1', 'comp2'], () => {});
 
   it('should have property name', () => {
@@ -60,7 +60,16 @@ describe.only('System', () => {
           15: {}
         }
       },
-      ids: [51, 1, 15, 83, 3451, 52, 71, 2]
+      ids: {
+        51: true,
+        1: true,
+        15: true,
+        83: true,
+        3451: true,
+        52: true,
+        71: true,
+        2: true
+      }
     };
 
     let requiredComponents = ['position', 'rotation'];
@@ -74,8 +83,22 @@ describe.only('System', () => {
 
       ids.should.be.an.instanceof(Array);
       ids.length.should.equal(2);
-      ids.should.contain(1);
-      ids.should.contain(15);
+      ids.should.contain('1');
+      ids.should.contain('15');
+    });
+
+    it('should also be possible to use an array with ids as input', () => {
+      let idsArray = [51, 1, 15, 83, 3451, 52, 71, 2];
+      let system = new System('test', requiredComponents, () => {}, true);
+      let ids = system.getIdsMatchingRequiredComponents(
+        idsArray,
+        world.components
+      );
+
+      ids.should.be.an.instanceof(Array);
+      ids.length.should.equal(2);
+      ids.should.contain('1');
+      ids.should.contain('15');
     });
   });
 
@@ -97,7 +120,16 @@ describe.only('System', () => {
           83: 2
         }
       },
-      ids: [51, 1, 15, 83, 3451, 52, 71, 2]
+      ids: {
+        51: true,
+        1: true,
+        15: true,
+        83: true,
+        3451: true,
+        52: true,
+        71: true,
+        2: true
+      }
     };
 
     let requiredComponents = ['position', 'rotation'];
@@ -123,7 +155,7 @@ describe.only('System', () => {
   describe('#tick', () => {
     it(
       'should have functionality to tick a system into a new state so that it' +
-      'updates component data',
+      ' updates component data',
       () => {
         let world = new World();
 
@@ -165,7 +197,7 @@ describe.only('System', () => {
         distance = world.getComponentDataFor('distanceEntity1', 'distance');
         distance.distance.should.equal(70);
         distance = world.getComponentDataFor('distanceEntity2', 'distance');
-        distance.distance.should.equal(105);
+        distance.distance.should.equal(95);
       }
     );
 
@@ -183,8 +215,10 @@ describe.only('System', () => {
           name: 'distanceUpdate',
           components: ['distance'],
           each: true,
-          action: (world, entityId, distance) => {
-            distance.distance += 10 * world.deltaTimeSeconds;
+          action: (world, entityIds, distances) => {
+            distances.forEach((distance) => {
+              distance.distance += 10 * world.deltaTimeSeconds;
+            });
           }
         });
 
@@ -212,7 +246,7 @@ describe.only('System', () => {
         distance = world.getComponentDataFor('distanceEntity1', 'distance');
         distance.distance.should.equal(70);
         distance = world.getComponentDataFor('distanceEntity2', 'distance');
-        distance.distance.should.equal(105);
+        distance.distance.should.equal(95);
       }
     );
   });

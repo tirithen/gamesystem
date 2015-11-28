@@ -41,6 +41,10 @@ export default class System {
   getIdsMatchingRequiredComponents(worldIds, worldComponents) {
     let ids = [];
 
+    if (!Array.isArray(worldIds) && worldIds instanceof Object) {
+      worldIds = Object.keys(worldIds);
+    }
+
     worldIds.forEach((id) => {
       let meetsRequirements = true;
 
@@ -51,7 +55,8 @@ export default class System {
       });
 
       if (meetsRequirements) {
-        ids.push(id);
+        // Add id and Make sure that the id is returned as string
+        ids.push(id.toString());
       }
     });
 

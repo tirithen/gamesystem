@@ -5,7 +5,7 @@ export default class World {
     this.components = {};
     this.componentTypes = {};
     this.labels = {};
-    this.ids = [];
+    this.ids = {};
     this.systems = [];
     this.lastId = 1;
     this.entitiesToDestroy = {};
