@@ -215,10 +215,8 @@ describe('System', () => {
           name: 'distanceUpdate',
           components: ['distance'],
           each: true,
-          action: (world, entityIds, distances) => {
-            distances.forEach((distance) => {
-              distance.distance += 10 * world.deltaTimeSeconds;
-            });
+          action: (world, entityId, distance) => {
+            distance.distance += 10 * world.deltaTimeSeconds;
           }
         });
 

@@ -8,34 +8,26 @@ export default class System {
 
   tick(world) {
     // Get the data for the system
-    let data;
+    let ids = this.getIdsMatchingRequiredComponents(
+      world.ids,
+      world.components
+    );
+    let data = this.getComponentDataForIds(ids, world.components);
+
     if (this.each) {
-      data = this.runActionEach(world);
+      // Run the system one time per component
+      ids.forEach((id, index) => {
+        // TODO: improve performance by having this array in the correct format from the start
+        let row = data.map((component) => {
+          return component[index];
+        });
+
+        this.action.apply(this, [world, id].concat(row));
+      });
     } else {
-      data = this.runAction(world);
+      // Run the system
+      this.action.apply(this, [world, ids].concat(data));
     }
-  }
-
-  runActionEach(world) {
-    let ids = this.getIdsMatchingRequiredComponents(
-      world.ids,
-      world.components
-    );
-    let data = this.getComponentDataForIds(ids, world.components);
-
-    // Run the system
-    this.action.apply(this, data);
-  }
-
-  runAction(world) {
-    let ids = this.getIdsMatchingRequiredComponents(
-      world.ids,
-      world.components
-    );
-    let data = this.getComponentDataForIds(ids, world.components);
-
-    // Run the system
-    this.action.apply(this, [world, ids].concat(data));
   }
 
   getIdsMatchingRequiredComponents(worldIds, worldComponents) {
@@ -74,6 +66,8 @@ export default class System {
 
         if (worldComponents[name] && worldComponents[name][id]) {
           data[nameIndex][idIndex] = worldComponents[name][id];
+        } else {
+          data[nameIndex][idIndex] = undefined;
         }
       });
     });
@@ -81,19 +75,3 @@ export default class System {
     return data;
   }
 }
-/*
-// datas contain all keys that have any of the names, not
-// an intersection.
-var datas = system.requiredComponents.map(this.indexedData)
-
-// keys is an intersection.
-var keys = this.keysMatching.apply(this, system.requiredComponents);
-
-// No data matches this system's requirements.
-if (!keys.length && system.requiredComponents.length > 0) continue;
-
-// Prepare to be used as arguments.
-datas.unshift(keys);
-datas.unshift(this);
-system.action.apply(system, datas);
-*/
