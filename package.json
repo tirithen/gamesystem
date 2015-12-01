@@ -1,6 +1,6 @@
 {
   "name": "gamesystem",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A simple system for making games, based on the idea pocket-ces by Andrew Petersen",
   "main": "World.js",
   "scripts": {
