@@ -17,7 +17,8 @@ export default class System {
     if (this.each) {
       // Run the system one time per component
       ids.forEach((id, index) => {
-        // TODO: improve performance by having this array in the correct format from the start
+        // TODO: improve performance by having this array in the correct format
+        //       from the start
         let row = data.map((component) => {
           return component[index];
         });

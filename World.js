@@ -1,3 +1,5 @@
+'use strict';
+
 import System from './System';
 
 export default class World {
@@ -162,7 +164,8 @@ export default class World {
   }
 
   immediatelyDestroyEntity(id) {
-    // TODO: make sure to properly delete any instances related to the entity but are registered in external frameworks like THREE.js
+    // TODO: make sure to properly delete any instances related to the entity
+    //       but are registered in external frameworks like THREE.js
     // Run destroyEntity to make sure that it is properly marked for deletion
     this.destroyEntity(id);
 

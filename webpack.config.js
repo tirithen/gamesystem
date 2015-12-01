@@ -1,25 +1,39 @@
-var WebpackNotifierPlugin = require('webpack-notifier');
+(() => {
+  'use strict';
 
-module.exports = {
-  entry: './example/main.js',
-  output: {
-    filename: 'script.js',
-    path: __dirname + '/example/dist'
-  },
-  devtool: 'cheap-source-map',
-  module: {
-    loaders: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-        query: {
-          presets: ['es2015', 'stage-0']
+  let WebpackNotifierPlugin = require('webpack-notifier');
+  let HtmlWebpackPlugin = require('html-webpack-plugin');
+
+  module.exports = {
+    entry: {
+      canvas: './example/canvas/main.js'
+    },
+    output: {
+      path: __dirname + '/build',
+      filename: '[name]/script.js'
+    },
+    devtool: 'cheap-source-map',
+    module: {
+      loaders: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          loader: 'babel-loader',
+          query: {
+            presets: ['es2015', 'stage-0']
+          }
         }
-      }
+      ]
+    },
+    plugins: [
+      new WebpackNotifierPlugin(),
+      new HtmlWebpackPlugin({
+        title: 'Basic canvas example',
+        filename: './canvas/index.html',
+        template: './example/template.html',
+        inject: 'body',
+        chunks: ['canvas']
+      })
     ]
-  },
-  plugins: [
-    new WebpackNotifierPlugin()
-  ]
-};
+  };
+}());

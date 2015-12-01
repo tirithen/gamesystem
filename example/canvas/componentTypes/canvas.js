@@ -1,3 +1,5 @@
+'use strict';
+
 export default function canvas(component) {
   component.canvas = document.createElement('canvas');
   document.body.appendChild(component.canvas);

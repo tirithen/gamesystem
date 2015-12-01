@@ -1,3 +1,5 @@
+'use strict';
+
 export default function drawClear(world) {
   let canvas = world.getComponentDataFor('canvas', 'canvas');
   let context = canvas.context;

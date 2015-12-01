@@ -1,5 +1,9 @@
-import position from '../../../example/componentTypes/position';
-import World from '../../../World';
+'use strict';
+
+/* global describe, it */
+
+import position from '../../../../example/canvas/componentTypes/position';
+import World from '../../../../World';
 
 describe('componentTypes', () => {
   describe('position', () => {

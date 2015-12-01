@@ -1,3 +1,7 @@
+'use strict';
+
+/* global describe, it */
+
 let should = require('chai').should();
 
 import World from '../World';

@@ -1,4 +1,6 @@
-let should = require('chai').should();
+'use strict';
+
+/* global describe, it */
 
 import System from '../System';
 import World from '../World';

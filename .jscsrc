@@ -1,0 +1,10 @@
+{
+  "preset": "airbnb",
+  "requirePaddingNewLinesAfterBlocks": false,
+  "requireTrailingComma": false,
+  "excludeFiles": [
+    "node_modules",
+    "dist",
+    ".git"
+  ]
+}

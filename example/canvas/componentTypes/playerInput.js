@@ -1,3 +1,5 @@
+'use strict';
+
 // TODO: write tests
 
 export default function playerInput(component, options) {
