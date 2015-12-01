@@ -26,7 +26,7 @@ world.addComponentType(position);
 world.addComponentType(radius);
 
 // Add entities
-world.addEntity({id: 'canvas', 'canvas': undefined});
+world.addEntity({id: 'canvas', canvas: undefined});
 world.addEntity(playerAvatar);
 
 // Add systems
