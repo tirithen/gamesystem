@@ -4,9 +4,9 @@
   "description": "A simple system for making games, based on the idea pocket-ces by Andrew Petersen",
   "main": "World.js",
   "scripts": {
-    "build": "rm -Rf ./build && npm run lint && npm run test && ./node_modules/.bin/webpack -p --process --colors --content-base example/",
+    "build": "rm -Rf ./build && npm run test && ./node_modules/.bin/webpack -p --process --colors --content-base example/",
     "start": "./node_modules/.bin/webpack-dev-server --process --colors --content-base example/",
-    "test": "./node_modules/.bin/mocha --recursive --compilers js:babel-core/register",
+    "test": "npm run lint && ./node_modules/.bin/mocha --recursive --compilers js:babel-core/register",
     "test-watch": "./node_modules/.bin/mocha --watch --growl --recursive --compilers js:babel-core/register",
     "lint": "./node_modules/.bin/jscs . && ./node_modules/.bin/jshint --config .jshintrc --exclude-path .gitignore ."
   },
