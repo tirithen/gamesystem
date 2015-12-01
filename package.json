@@ -2,7 +2,7 @@
   "name": "gamesystem",
   "version": "0.1.0",
   "description": "",
-  "main": "example/main.js",
+  "main": "example/canvas/main.js",
   "scripts": {
     "start": "./node_modules/.bin/webpack-dev-server --process --colors --content-base example/",
     "test": "./node_modules/.bin/mocha --recursive --compilers js:babel-core/register",
