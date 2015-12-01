@@ -1,5 +1,7 @@
 # Gamesystem
 
+[![Build Status](https://travis-ci.org/tirithen/gamesystem.svg?branch=master)](https://travis-ci.org/tirithen/gamesystem)
+
 ## Idea
 
 Alternative implementation of the [pocket-ces](https://github.com/kirbysayshi/pocket-ces) project in ECMAScript 6.
@@ -33,4 +35,4 @@ This project is released under the GPL-3.0 license.
 
 ## Please submit your feedback
 
-Any feedback is of value to improve this system, please feel free to use the GitHub issue tracker at https://github.com/tirithen/gamesystem/issues 
+Any feedback is of value to improve this system, please feel free to use the GitHub issue tracker at https://github.com/tirithen/gamesystem/issues
