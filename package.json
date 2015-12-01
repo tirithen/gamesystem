@@ -2,7 +2,7 @@
   "name": "gamesystem",
   "version": "0.1.0",
   "description": "A simple system for making games, based on the idea pocket-ces by Andrew Petersen",
-  "main": "example/canvas/main.js",
+  "main": "World.js",
   "scripts": {
     "build": "rm -Rf ./build && npm run lint && npm run test && ./node_modules/.bin/webpack -p --process --colors --content-base example/",
     "start": "./node_modules/.bin/webpack-dev-server --process --colors --content-base example/",
