@@ -1,3 +1,5 @@
+'use strict';
+
 export default class System {
   constructor(name, components, action, each) {
     this.name = name;
